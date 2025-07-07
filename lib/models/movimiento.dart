@@ -1,4 +1,6 @@
 class Movimiento {
+  double get total => cantidad * precioUnitario;
+
   final int? id;
   final int productoId;
   final String tipo; // "compra" o "venta"

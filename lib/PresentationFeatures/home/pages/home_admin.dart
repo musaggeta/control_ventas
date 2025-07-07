@@ -1,4 +1,8 @@
 import 'package:control_ventas/PresentationFeatures/auth/auth_controller.dart';
+import 'package:control_ventas/PresentationFeatures/home/pages/edit_profile_page.dart';
+import 'package:control_ventas/PresentationFeatures/home/register_user_page.dart';
+import 'package:control_ventas/PresentationFeatures/sales/pages/sales_pages.dart';
+import 'package:control_ventas/features/purchases/pages/purchases_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -90,13 +94,13 @@ class _HomeAdminPageState extends ConsumerState<HomeAdminPage> {
           child: Text('Resumen general de compras y ventas del mes/año'),
         );
       case 1:
-        return const Center(child: Text('Pantalla: Editar perfil'));
+        return const EditProfilePage();
       case 2:
-        return const Center(child: Text('Pantalla: Registrar nuevos usuarios'));
+        return const RegisterUserPage();
       case 3:
-        return const Center(child: Text('Pantalla: Detalle de ventas'));
+        return const SalesPage();
       case 4:
-        return const Center(child: Text('Pantalla: Detalle de compras'));
+        return const PurchasesPage();
       default:
         return const Center(child: Text('Página no encontrada'));
     }
