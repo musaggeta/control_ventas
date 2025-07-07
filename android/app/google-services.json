@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "508394747264",
+    "project_id": "control-ventas-compras",
+    "storage_bucket": "control-ventas-compras.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508394747264:android:be4a9db8daeb57b89f7d65",
+        "android_client_info": {
+          "package_name": "com.example.control_ventas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARPCvKYGsOpXcYlmhrXgbGww7eDdK93Hw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
