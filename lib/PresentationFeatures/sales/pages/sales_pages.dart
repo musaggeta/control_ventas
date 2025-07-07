@@ -3,6 +3,7 @@ import 'package:control_ventas/applicationProviders/movimiento_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import '../../../models/movimiento.dart';
 
 class SalesPage extends ConsumerWidget {
@@ -10,40 +11,38 @@ class SalesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ventasAsync = ref.watch(movimientoListProvider);
+    final movimientos = ref.watch(movimientoProvider);
+    final notifier = ref.read(movimientoProvider.notifier);
+
+    final ventas = movimientos.where((m) => m.tipo == 'venta').toList()
+      ..sort((a, b) => b.fecha.compareTo(a.fecha));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ventas'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // TODO: Agregar filtros
-            },
-            icon: const Icon(Icons.filter_list),
-          ),
-        ],
-      ),
-      body: ventasAsync.when(
-        data: (movimientos) {
-          final ventas = movimientos.where((m) => m.tipo == 'venta').toList()
-            ..sort((a, b) => b.fecha.compareTo(a.fecha));
-
-          if (ventas.isEmpty) {
-            return const Center(child: Text('No hay ventas registradas.'));
-          }
-
-          return ListView.builder(
-            itemCount: ventas.length,
-            itemBuilder: (context, index) {
-              final venta = ventas[index];
-              return SaleItem(venta);
-            },
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error: $e')),
-      ),
+      appBar: AppBar(title: const Text('Ventas')),
+      body: ventas.isEmpty
+          ? const Center(child: Text('No hay ventas registradas'))
+          : ListView.builder(
+              itemCount: ventas.length,
+              itemBuilder: (context, index) {
+                final venta = ventas[index];
+                return Dismissible(
+                  key: ValueKey(venta.id),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: const Icon(Icons.delete, color: Colors.white),
+                  ),
+                  onDismissed: (_) {
+                    if (venta.id != null) {
+                      notifier.deleteMovimiento(venta.id!);
+                    }
+                  },
+                  child: SaleItem(venta),
+                );
+              },
+            ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           _mostrarFormularioVenta(context, ref);
@@ -57,14 +56,12 @@ class SalesPage extends ConsumerWidget {
   void _mostrarFormularioVenta(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
-      builder: (context) {
-        return const Dialog(
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text('TODO: Formulario de nueva venta'),
-          ),
-        );
-      },
+      builder: (_) => const Dialog(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text('TODO: Aquí va el formulario de nueva venta'),
+        ),
+      ),
     );
   }
 }

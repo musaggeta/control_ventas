@@ -2,7 +2,8 @@ import 'package:control_ventas/PresentationFeatures/auth/auth_controller.dart';
 import 'package:control_ventas/PresentationFeatures/home/pages/edit_profile_page.dart';
 import 'package:control_ventas/PresentationFeatures/home/register_user_page.dart';
 import 'package:control_ventas/PresentationFeatures/sales/pages/sales_pages.dart';
-import 'package:control_ventas/features/purchases/pages/purchases_page.dart';
+import 'package:control_ventas/PresentationFeatures/sales/sales_form.dart';
+//import 'package:control_ventas/features/purchases/pages/purchases_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -54,10 +55,17 @@ class _HomeAdminPageState extends ConsumerState<HomeAdminPage> {
               onTap: () => _selectPage(2),
             ),
             ListTile(
-              leading: const Icon(Icons.bar_chart),
-              title: const Text('Ventas'),
-              onTap: () => _selectPage(3),
+              leading: const Icon(Icons.add_shopping_cart),
+              title: const Text('Registrar venta'),
+              onTap: () {
+                Navigator.pop(context); // Cierra el drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const VentaForm()),
+                );
+              },
             ),
+
             ListTile(
               leading: const Icon(Icons.shopping_cart),
               title: const Text('Compras'),
@@ -99,8 +107,8 @@ class _HomeAdminPageState extends ConsumerState<HomeAdminPage> {
         return const RegisterUserPage();
       case 3:
         return const SalesPage();
-      case 4:
-        return const PurchasesPage();
+      /* case 4:
+        return const PurchasesPage();*/
       default:
         return const Center(child: Text('Página no encontrada'));
     }

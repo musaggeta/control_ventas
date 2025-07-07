@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:control_ventas/PresentationFeatures/home/pages/home_admin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,9 +28,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         data: (user) {
           if (user != null) {
             setState(() => _loginState = LoginState.success);
-            Future.delayed(const Duration(seconds: 1), () {
-              // TODO: navegar a home
+            Future.delayed(const Duration(milliseconds: 800), () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => const HomeAdminPage()),
+              );
             });
+            ;
           }
         },
         error: (error, _) {
@@ -103,8 +107,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         },
       ),
 
-      // 👇 AÑADIMOS EL FAB AQUÍ
-      floatingActionButton: FloatingActionButton(
+      // Creamos un boton de apoyo para crear el usuario admin, luego de implementarlo, comentar esta seccion
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final auth = FirebaseAuth.instance;
           final firestore = FirebaseFirestore.instance;
@@ -126,7 +130,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           }
         },
         child: const Icon(Icons.admin_panel_settings),
-      ),
+      ),*/
     );
   }
 }

@@ -33,4 +33,19 @@ class MovimientoDao {
     final db = await dbHelper.db;
     return await db.delete('movimientos');
   }
+
+  Future<int> update(Movimiento m) async {
+    final db = await dbHelper.db;
+    return await db.update(
+      'movimientos',
+      m.toMap(),
+      where: 'id = ?',
+      whereArgs: [m.id],
+    );
+  }
+
+  Future<int> delete(int id) async {
+    final db = await dbHelper.db;
+    return await db.delete('movimientos', where: 'id = ?', whereArgs: [id]);
+  }
 }
