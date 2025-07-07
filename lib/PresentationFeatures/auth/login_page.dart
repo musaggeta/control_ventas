@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oktoast/oktoast.dart';
 import 'auth_controller.dart';
 import '../../widgets/animated_login_button.dart';
 
@@ -25,15 +28,32 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           if (user != null) {
             setState(() => _loginState = LoginState.success);
             Future.delayed(const Duration(seconds: 1), () {
-              // TODO: Navegar a home
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Ingreso exitoso.')));
+              // TODO: navegar a home
             });
           }
         },
         error: (error, _) {
           setState(() => _loginState = LoginState.error);
+
+          showToast(
+            "❗ Intenta de nuevo",
+            position: ToastPosition.top,
+            backgroundColor: Colors.black.withOpacity(0.7),
+            radius: 8.0,
+            textPadding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 10.0,
+            ),
+          );
+          ;
+
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(error.toString())));
+
+          Future.delayed(const Duration(seconds: 2), () {
+            setState(() => _loginState = LoginState.idle);
+          });
         },
         loading: () {
           setState(() => _loginState = LoginState.loading);
@@ -81,6 +101,31 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
           );
         },
+      ),
+
+      // 👇 AÑADIMOS EL FAB AQUÍ
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final auth = FirebaseAuth.instance;
+          final firestore = FirebaseFirestore.instance;
+
+          try {
+            final cred = await auth.createUserWithEmailAndPassword(
+              email: 'admin@control.com',
+              password: 'admin123',
+            );
+            await firestore.collection('usuarios').doc(cred.user!.uid).set({
+              'uid': cred.user!.uid,
+              'email': 'admin@control.com',
+              'nombre': 'Administrador',
+              'rol': 'admin',
+            });
+            showToast("✅ Admin creado correctamente");
+          } catch (e) {
+            showToast("❌ Error al crear admin: $e");
+          }
+        },
+        child: const Icon(Icons.admin_panel_settings),
       ),
     );
   }

@@ -18,6 +18,8 @@ dependencies:
   firebase_auth: ^4.20.0
   cloud_firestore: ^4.17.0
   shared_preferences: ^2.2.2
+  oktoast: ^3.3.1
+
   
 
 

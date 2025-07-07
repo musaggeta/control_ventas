@@ -33,7 +33,7 @@ class _AnimatedLoginButtonState extends State<AnimatedLoginButton>
       begin: 1,
       end: 1.3,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
-    _rotation = Tween<double>(begin: 0, end: 2).animate(_controller);
+    _rotation = Tween<double>(begin: 0, end: 3).animate(_controller);
   }
 
   @override

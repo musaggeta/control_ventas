@@ -9,6 +9,7 @@ plugins {
 }
 
 android {
+    
     namespace = "com.example.control_ventas"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
